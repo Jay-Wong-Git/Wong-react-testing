@@ -1,8 +1,7 @@
-import ExpandableText from "../components/ExpandableText";
+import SearchBox from "../components/SearchBox";
 
 const PlaygroundPage = () => {
-  const text = "a".repeat(256);
-  return <ExpandableText text={text} />;
+  return <SearchBox onChange={(searchTerm) => console.log(searchTerm)} />;
 };
 
 export default PlaygroundPage;
