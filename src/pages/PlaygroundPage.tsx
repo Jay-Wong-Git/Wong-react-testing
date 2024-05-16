@@ -1,7 +1,8 @@
-import TermsAndConditions from "../components/TermsAndConditions";
+import ExpandableText from "../components/ExpandableText";
 
 const PlaygroundPage = () => {
-  return <TermsAndConditions />;
+  const text = "a".repeat(256);
+  return <ExpandableText text={text} />;
 };
 
 export default PlaygroundPage;
