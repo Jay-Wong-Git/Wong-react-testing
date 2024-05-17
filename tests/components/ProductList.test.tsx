@@ -1,5 +1,9 @@
-import { render, screen } from "@testing-library/react";
-import { http, HttpResponse } from "msw";
+import {
+  render,
+  screen,
+  waitForElementToBeRemoved,
+} from "@testing-library/react";
+import { delay, http, HttpResponse } from "msw";
 
 import ProductList from "../../src/components/ProductList";
 import { server } from "../mocks/server";
@@ -29,7 +33,7 @@ describe("ProductList", () => {
   });
 
   it("should rend No products available if no product is found", async () => {
-    server.use(http.get("products", () => HttpResponse.json([])));
+    server.use(http.get("/products", () => HttpResponse.json([])));
     renderComponent();
 
     const message = await screen.findByText(/no products/i);
@@ -37,10 +41,36 @@ describe("ProductList", () => {
   });
 
   it("should render an error if there is an error", async () => {
-    server.use(http.get("products", () => HttpResponse.error()));
+    server.use(http.get("/products", () => HttpResponse.error()));
 
     renderComponent();
 
     expect(await screen.findByText(/error:/i)).toBeInTheDocument();
+  });
+
+  it("should render a loading indicator when fetching data", async () => {
+    server.use(
+      http.get("/products", async () => {
+        await delay();
+        return HttpResponse.json([]);
+      })
+    );
+
+    renderComponent();
+
+    expect(await screen.findByText(/loading/i)).toBeInTheDocument();
+  });
+
+  it("should remove the loading indicator when data is fetched", async () => {
+    renderComponent();
+    await waitForElementToBeRemoved(() => screen.queryByText(/loading/i));
+  });
+
+  it("should remove the loading indicator if data fetching fails", async () => {
+    server.use(http.get("/products", () => HttpResponse.error()));
+
+    renderComponent();
+
+    await waitForElementToBeRemoved(() => screen.queryByText(/loading/i));
   });
 });
