@@ -1,14 +1,13 @@
 import { render, screen } from "@testing-library/react";
 import { http, HttpResponse } from "msw";
 
-import ProductDetail from "../../src/components/ProductDetail";
+import ProductDetail_v1 from "../../src/components/ProductDetail_v1";
 import { server } from "../mocks/server";
 import { db } from "../mocks/db";
-import AllProviders from "../AllProviders";
 
 describe("ProductDetail", () => {
   const renderComponent = (productId: number) => {
-    render(<ProductDetail productId={productId} />, { wrapper: AllProviders });
+    render(<ProductDetail_v1 productId={productId} />);
   };
 
   let productId: number;
@@ -47,7 +46,7 @@ describe("ProductDetail", () => {
   it("should render an error if the given id is invalid", async () => {
     renderComponent(0);
 
-    expect(await screen.findByText(/error/i)).toBeInTheDocument();
+    expect(await screen.findByText(/error:/i)).toBeInTheDocument();
   });
 
   it("should render an error if there is an error", async () => {
