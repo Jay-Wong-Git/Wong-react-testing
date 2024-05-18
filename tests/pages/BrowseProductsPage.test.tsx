@@ -4,12 +4,11 @@ import {
   waitForElementToBeRemoved,
 } from "@testing-library/react";
 
-import { Theme } from "@radix-ui/themes";
 import userEvent from "@testing-library/user-event";
 import { Category, Product } from "../../src/entities";
 import BrowseProducts from "../../src/pages/BrowseProductsPage";
-import { CartProvider } from "../../src/providers/CartProvider";
-import { db } from "../mocks/db";
+import AllProviders from "../AllProviders";
+import { db, getProductsByCategory } from "../mocks/db";
 import { simulateDelay, simulateError } from "../utils";
 
 describe("BrowseProducts", () => {
@@ -17,9 +16,17 @@ describe("BrowseProducts", () => {
   const products: Product[] = [];
 
   beforeAll(() => {
-    [1, 2, 3, 4].forEach((item) => {
-      categories.push(db.category.create({ name: "Category " + item }));
-      products.push(db.product.create({ name: "Product " + item }));
+    [1, 2, 3, 4].forEach((i) => {
+      const category = db.category.create({ name: "Category " + i });
+      categories.push(category);
+      [1, 2, 3].forEach((j) => {
+        products.push(
+          db.product.create({
+            name: "Product " + i + j,
+            categoryId: category.id,
+          })
+        );
+      });
     });
   });
 
@@ -30,24 +37,6 @@ describe("BrowseProducts", () => {
     db.category.deleteMany({ where: { id: { in: categoryIds } } });
     db.product.deleteMany({ where: { id: { in: productIds } } });
   });
-
-  const renderComponent = () => {
-    render(
-      <Theme>
-        <CartProvider>
-          <BrowseProducts />
-        </CartProvider>
-      </Theme>
-    );
-    return {
-      user: userEvent.setup(),
-      getProductsSkeleton: () =>
-        screen.getByRole("progressbar", { name: /products/i }),
-      getCategoriesSkeleton: () =>
-        screen.getByRole("progressbar", { name: /categories/i }),
-      getCategoryCombobox: () => screen.queryByRole("combobox"),
-    };
-  };
 
   it("should render a loading skeleton while fetching categories", () => {
     simulateDelay("/categories");
@@ -126,4 +115,68 @@ describe("BrowseProducts", () => {
       expect(screen.getByText(product.name)).toBeInTheDocument();
     });
   });
+
+  it("should filter products by category", async () => {
+    const { selectCategory, expectProductsToBeInTheDocument } =
+      renderComponent();
+
+    const selectedCategory = categories[0];
+    await selectCategory(new RegExp(selectedCategory.name, "i"));
+
+    const products = getProductsByCategory(selectedCategory.id);
+    expectProductsToBeInTheDocument(products);
+  });
+
+  it("should render all products if All category is selected", async () => {
+    const { selectCategory, expectProductsToBeInTheDocument } =
+      renderComponent();
+
+    await selectCategory(/all/i);
+
+    const products = db.product.getAll();
+    expectProductsToBeInTheDocument(products);
+  });
+
+  const renderComponent = () => {
+    const user = userEvent.setup();
+
+    const getCategoriesSkeleton = () =>
+      screen.getByRole("progressbar", { name: /categories/i });
+
+    const getCategoryCombobox = () => screen.queryByRole("combobox");
+
+    const getProductsSkeleton = () =>
+      screen.getByRole("progressbar", { name: /products/i });
+
+    const selectCategory = async (name: RegExp) => {
+      await waitForElementToBeRemoved(getCategoriesSkeleton);
+      const combobox = getCategoryCombobox();
+      await user.click(combobox!);
+      const option = screen.getByRole("option", { name });
+      await user.click(option);
+    };
+
+    const expectProductsToBeInTheDocument = (products: Product[]) => {
+      products.forEach((product) => {
+        expect(
+          screen.getByText(new RegExp(product.name, "i"))
+        ).toBeInTheDocument();
+      });
+    };
+
+    render(
+      <AllProviders>
+        <BrowseProducts />
+      </AllProviders>
+    );
+
+    return {
+      user,
+      getProductsSkeleton,
+      getCategoriesSkeleton,
+      getCategoryCombobox,
+      selectCategory,
+      expectProductsToBeInTheDocument,
+    };
+  };
 });
