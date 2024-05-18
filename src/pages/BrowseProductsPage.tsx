@@ -65,12 +65,7 @@ function BrowseProducts() {
   const renderProducts = () => {
     const skeletons = [1, 2, 3, 4, 5];
 
-    if (errorProducts)
-      return (
-        <div role="alert" aria-label="Error products">
-          Error: {errorProducts}
-        </div>
-      );
+    if (errorProducts) return <div>Error: {errorProducts}</div>;
 
     const visibleProducts = selectedCategoryId
       ? products!.filter((p) => p.categoryId === selectedCategoryId)

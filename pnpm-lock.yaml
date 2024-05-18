@@ -90,6 +90,9 @@ devDependencies:
   '@vitejs/plugin-react':
     specifier: ^4.2.1
     version: registry.npmmirror.com/@vitejs/plugin-react@4.2.1(vite@5.2.11)
+  '@vitest/coverage-v8':
+    specifier: ^1.6.0
+    version: registry.npmmirror.com/@vitest/coverage-v8@1.6.0(vitest@1.6.0)
   '@vitest/ui':
     specifier: ^1.2.2
     version: registry.npmmirror.com/@vitest/ui@1.6.0(vitest@1.6.0)
@@ -452,6 +455,12 @@ packages:
       '@babel/helper-string-parser': registry.npmmirror.com/@babel/helper-string-parser@7.24.1
       '@babel/helper-validator-identifier': registry.npmmirror.com/@babel/helper-validator-identifier@7.24.5
       to-fast-properties: registry.npmmirror.com/to-fast-properties@2.0.0
+    dev: true
+
+  registry.npmmirror.com/@bcoe/v8-coverage@0.2.3:
+    resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz}
+    name: '@bcoe/v8-coverage'
+    version: 0.2.3
     dev: true
 
   registry.npmmirror.com/@bundled-es-modules/cookie@2.0.0:
@@ -862,6 +871,13 @@ packages:
       strip-ansi-cjs: registry.npmmirror.com/strip-ansi@6.0.1
       wrap-ansi: registry.npmmirror.com/wrap-ansi@8.1.0
       wrap-ansi-cjs: registry.npmmirror.com/wrap-ansi@7.0.0
+    dev: true
+
+  registry.npmmirror.com/@istanbuljs/schema@0.1.3:
+    resolution: {integrity: sha512-ZXRY4jNvVgSVQ8DL3LTcakaAtXwTVUxE81hslsyD2AtoXW/wVob10HkOJ1X/pAlcI7D+2YoZKg5do8G/w6RYgA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@istanbuljs/schema/-/schema-0.1.3.tgz}
+    name: '@istanbuljs/schema'
+    version: 0.1.3
+    engines: {node: '>=8'}
     dev: true
 
   registry.npmmirror.com/@jest/schemas@29.6.3:
@@ -2887,6 +2903,32 @@ packages:
       - supports-color
     dev: true
 
+  registry.npmmirror.com/@vitest/coverage-v8@1.6.0(vitest@1.6.0):
+    resolution: {integrity: sha512-KvapcbMY/8GYIG0rlwwOKCVNRc0OL20rrhFkg/CHNzncV03TE2XWvO5w9uZYoxNiMEBacAJt3unSOiZ7svePew==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@vitest/coverage-v8/-/coverage-v8-1.6.0.tgz}
+    id: registry.npmmirror.com/@vitest/coverage-v8/1.6.0
+    name: '@vitest/coverage-v8'
+    version: 1.6.0
+    peerDependencies:
+      vitest: 1.6.0
+    dependencies:
+      '@ampproject/remapping': registry.npmmirror.com/@ampproject/remapping@2.3.0
+      '@bcoe/v8-coverage': registry.npmmirror.com/@bcoe/v8-coverage@0.2.3
+      debug: registry.npmmirror.com/debug@4.3.4
+      istanbul-lib-coverage: registry.npmmirror.com/istanbul-lib-coverage@3.2.2
+      istanbul-lib-report: registry.npmmirror.com/istanbul-lib-report@3.0.1
+      istanbul-lib-source-maps: registry.npmmirror.com/istanbul-lib-source-maps@5.0.4
+      istanbul-reports: registry.npmmirror.com/istanbul-reports@3.1.7
+      magic-string: registry.npmmirror.com/magic-string@0.30.10
+      magicast: registry.npmmirror.com/magicast@0.3.4
+      picocolors: registry.npmmirror.com/picocolors@1.0.1
+      std-env: registry.npmmirror.com/std-env@3.7.0
+      strip-literal: registry.npmmirror.com/strip-literal@2.1.0
+      test-exclude: registry.npmmirror.com/test-exclude@6.0.0
+      vitest: registry.npmmirror.com/vitest@1.6.0(@types/node@20.12.12)(@vitest/ui@1.6.0)(jsdom@24.0.0)
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
   registry.npmmirror.com/@vitest/expect@1.6.0:
     resolution: {integrity: sha512-ixEvFVQjycy/oNgHjqsL6AZCDduC+tflRluaHIzKIsdbzkLn2U/iBnVeJwB6HsIjQBdfMR8Z0tRxKUsvFJEeWQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@vitest/expect/-/expect-1.6.0.tgz}
     name: '@vitest/expect'
@@ -4735,6 +4777,12 @@ packages:
       whatwg-encoding: registry.npmmirror.com/whatwg-encoding@3.1.1
     dev: true
 
+  registry.npmmirror.com/html-escaper@2.0.2:
+    resolution: {integrity: sha512-H2iMtd0I4Mt5eYiapRdIDjp+XzelXQ0tFE4JS7YFwFevXXMmOp9myNrUvCg0D6ws8iqkRPBfKHgbwig1SmlLfg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/html-escaper/-/html-escaper-2.0.2.tgz}
+    name: html-escaper
+    version: 2.0.2
+    dev: true
+
   registry.npmmirror.com/http-errors@2.0.0:
     resolution: {integrity: sha512-FtwrG/euBzaEjYeRqOgly7G0qviiXoJWnvEH2Z1plBdXgbyjv34pHTSb9zoeHMyDy33+DWy5Wt9Wo+TURtOYSQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/http-errors/-/http-errors-2.0.0.tgz}
     name: http-errors
@@ -5148,6 +5196,47 @@ packages:
     version: 2.0.0
     dev: true
 
+  registry.npmmirror.com/istanbul-lib-coverage@3.2.2:
+    resolution: {integrity: sha512-O8dpsF+r0WV/8MNRKfnmrtCWhuKjxrq2w+jpzBL5UZKTi2LeVWnWOmWRxFlesJONmc+wLAGvKQZEOanko0LFTg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/istanbul-lib-coverage/-/istanbul-lib-coverage-3.2.2.tgz}
+    name: istanbul-lib-coverage
+    version: 3.2.2
+    engines: {node: '>=8'}
+    dev: true
+
+  registry.npmmirror.com/istanbul-lib-report@3.0.1:
+    resolution: {integrity: sha512-GCfE1mtsHGOELCU8e/Z7YWzpmybrx/+dSTfLrvY8qRmaY6zXTKWn6WQIjaAFw069icm6GVMNkgu0NzI4iPZUNw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/istanbul-lib-report/-/istanbul-lib-report-3.0.1.tgz}
+    name: istanbul-lib-report
+    version: 3.0.1
+    engines: {node: '>=10'}
+    dependencies:
+      istanbul-lib-coverage: registry.npmmirror.com/istanbul-lib-coverage@3.2.2
+      make-dir: registry.npmmirror.com/make-dir@4.0.0
+      supports-color: registry.npmmirror.com/supports-color@7.2.0
+    dev: true
+
+  registry.npmmirror.com/istanbul-lib-source-maps@5.0.4:
+    resolution: {integrity: sha512-wHOoEsNJTVltaJp8eVkm8w+GVkVNHT2YDYo53YdzQEL2gWm1hBX5cGFR9hQJtuGLebidVX7et3+dmDZrmclduw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/istanbul-lib-source-maps/-/istanbul-lib-source-maps-5.0.4.tgz}
+    name: istanbul-lib-source-maps
+    version: 5.0.4
+    engines: {node: '>=10'}
+    dependencies:
+      '@jridgewell/trace-mapping': registry.npmmirror.com/@jridgewell/trace-mapping@0.3.25
+      debug: registry.npmmirror.com/debug@4.3.4
+      istanbul-lib-coverage: registry.npmmirror.com/istanbul-lib-coverage@3.2.2
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
+  registry.npmmirror.com/istanbul-reports@3.1.7:
+    resolution: {integrity: sha512-BewmUXImeuRk2YY0PVbxgKAysvhRPUQE0h5QRM++nVWyubKGV0l8qQ5op8+B2DOmwSe63Jivj0BjkPQVf8fP5g==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/istanbul-reports/-/istanbul-reports-3.1.7.tgz}
+    name: istanbul-reports
+    version: 3.1.7
+    engines: {node: '>=8'}
+    dependencies:
+      html-escaper: registry.npmmirror.com/html-escaper@2.0.2
+      istanbul-lib-report: registry.npmmirror.com/istanbul-lib-report@3.0.1
+    dev: true
+
   registry.npmmirror.com/jackspeak@2.3.6:
     resolution: {integrity: sha512-N3yCS/NegsOBokc8GAdM8UcmfsKiSS8cipheD/nivzr700H+nsMOxJjQnvwOcRYVuFkdH0wGUvW2WbXGmrZGbQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/jackspeak/-/jackspeak-2.3.6.tgz}
     name: jackspeak
@@ -5462,6 +5551,25 @@ packages:
     version: 0.30.10
     dependencies:
       '@jridgewell/sourcemap-codec': registry.npmmirror.com/@jridgewell/sourcemap-codec@1.4.15
+    dev: true
+
+  registry.npmmirror.com/magicast@0.3.4:
+    resolution: {integrity: sha512-TyDF/Pn36bBji9rWKHlZe+PZb6Mx5V8IHCSxk7X4aljM4e/vyDvZZYwHewdVaqiA0nb3ghfHU/6AUpDxWoER2Q==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/magicast/-/magicast-0.3.4.tgz}
+    name: magicast
+    version: 0.3.4
+    dependencies:
+      '@babel/parser': registry.npmmirror.com/@babel/parser@7.24.5
+      '@babel/types': registry.npmmirror.com/@babel/types@7.24.5
+      source-map-js: registry.npmmirror.com/source-map-js@1.2.0
+    dev: true
+
+  registry.npmmirror.com/make-dir@4.0.0:
+    resolution: {integrity: sha512-hXdUTZYIVOt1Ex//jAQi+wTZZpUpwBj/0QsOzqegb3rGMMeJiSEu5xLHnYfBrRV4RH2+OCSOO95Is/7x1WJ4bw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/make-dir/-/make-dir-4.0.0.tgz}
+    name: make-dir
+    version: 4.0.0
+    engines: {node: '>=10'}
+    dependencies:
+      semver: registry.npmmirror.com/semver@7.6.2
     dev: true
 
   registry.npmmirror.com/match-sorter@6.3.4:
@@ -7188,6 +7296,17 @@ packages:
       sucrase: registry.npmmirror.com/sucrase@3.35.0
     transitivePeerDependencies:
       - ts-node
+    dev: true
+
+  registry.npmmirror.com/test-exclude@6.0.0:
+    resolution: {integrity: sha512-cAGWPIyOHU6zlmg88jwm7VRyXnMN7iV68OGAbYDk/Mh/xC/pzVPlQtY6ngoIH/5/tciuhGfvESU8GrHrcxD56w==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/test-exclude/-/test-exclude-6.0.0.tgz}
+    name: test-exclude
+    version: 6.0.0
+    engines: {node: '>=8'}
+    dependencies:
+      '@istanbuljs/schema': registry.npmmirror.com/@istanbuljs/schema@0.1.3
+      glob: registry.npmmirror.com/glob@7.2.3
+      minimatch: registry.npmmirror.com/minimatch@3.1.2
     dev: true
 
   registry.npmmirror.com/text-table@0.2.0:
