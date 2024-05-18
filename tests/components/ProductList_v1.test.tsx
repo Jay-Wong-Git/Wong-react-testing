@@ -5,10 +5,9 @@ import {
 } from "@testing-library/react";
 import { delay, http, HttpResponse } from "msw";
 
-import ProductList from "../../src/components/ProductList";
+import ProductList_v1 from "../../src/components/ProductList_v1";
 import { server } from "../mocks/server";
 import { db } from "../mocks/db";
-import { QueryClient, QueryClientProvider } from "react-query";
 
 describe("ProductList", () => {
   const productIds: number[] = [];
@@ -23,14 +22,7 @@ describe("ProductList", () => {
   });
 
   const renderComponent = () => {
-    const client = new QueryClient({
-      defaultOptions: { queries: { retry: false } },
-    });
-    render(
-      <QueryClientProvider client={client}>
-        <ProductList />
-      </QueryClientProvider>
-    );
+    render(<ProductList_v1 />);
   };
 
   it("should render the list of products", async () => {
