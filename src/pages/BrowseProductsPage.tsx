@@ -56,7 +56,7 @@ function BrowseProducts() {
           <Skeleton />;
         </div>
       );
-    if (errorCategories) return <div>Error: {errorCategories}</div>;
+    if (errorCategories) return null;
     return (
       <Select.Root
         onValueChange={(categoryId) =>
@@ -82,7 +82,12 @@ function BrowseProducts() {
   const renderProducts = () => {
     const skeletons = [1, 2, 3, 4, 5];
 
-    if (errorProducts) return <div>Error: {errorProducts}</div>;
+    if (errorProducts)
+      return (
+        <div role="alert" aria-label="Error products">
+          Error: {errorProducts}
+        </div>
+      );
 
     const visibleProducts = selectedCategoryId
       ? products.filter((p) => p.categoryId === selectedCategoryId)
