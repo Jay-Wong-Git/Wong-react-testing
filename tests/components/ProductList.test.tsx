@@ -6,9 +6,9 @@ import {
 import { delay, http, HttpResponse } from "msw";
 
 import ProductList from "../../src/components/ProductList";
-import { server } from "../mocks/server";
+import AllProviders from "../AllProviders";
 import { db } from "../mocks/db";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { server } from "../mocks/server";
 
 describe("ProductList", () => {
   const productIds: number[] = [];
@@ -23,14 +23,12 @@ describe("ProductList", () => {
   });
 
   const renderComponent = () => {
-    const client = new QueryClient({
-      defaultOptions: { queries: { retry: false } },
-    });
-    render(
-      <QueryClientProvider client={client}>
-        <ProductList />
-      </QueryClientProvider>
-    );
+    // render(
+    //   <AllProviders>
+    //     <ProductList />
+    //   </AllProviders>
+    // );
+    render(<ProductList />, { wrapper: AllProviders });
   };
 
   it("should render the list of products", async () => {
