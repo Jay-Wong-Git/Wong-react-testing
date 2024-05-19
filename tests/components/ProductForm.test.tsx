@@ -46,18 +46,35 @@ describe("ProductForm", () => {
     expect(nameInput).toHaveFocus();
   });
 
+  it("should render an error if name is missing", async () => {
+    const { waitForFormToLoad, user } = renderComponent();
+
+    const { priceInput, categoryInput, submitButton } =
+      await waitForFormToLoad();
+
+    await user.type(priceInput, "10");
+    await user.click(categoryInput);
+    const options = screen.getAllByRole("option");
+    await user.click(options[0]);
+    await user.click(submitButton);
+
+    const error = screen.getByRole("alert");
+    expect(error).toHaveTextContent(/name is required/i);
+  });
+
   const renderComponent = (product?: Product) => {
     render(<ProductForm product={product} onSubmit={vi.fn()} />, {
       wrapper: AllProviders,
     });
     return {
+      user: userEvent.setup(),
       waitForFormToLoad: async () => {
         await screen.findByRole("form");
         return {
-          user: userEvent.setup(),
           nameInput: screen.getByPlaceholderText(/name/i),
           priceInput: screen.getByPlaceholderText(/price/i),
           categoryInput: screen.getByRole("combobox", { name: /category/i }),
+          submitButton: screen.getByRole("button", { name: /submit/i }),
         };
       },
     };
