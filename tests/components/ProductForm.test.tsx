@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 
+import userEvent from "@testing-library/user-event";
 import ProductForm from "../../src/components/ProductForm";
 import { Category, Product } from "../../src/entities";
 import AllProviders from "../AllProviders";
@@ -18,10 +19,9 @@ describe("ProductForm", () => {
   });
 
   it("should render form fields", async () => {
-    const { waitForFormToLoad, getInputs } = renderComponent();
+    const { waitForFormToLoad } = renderComponent();
 
-    await waitForFormToLoad();
-    const { nameInput, priceInput, categoryInput } = getInputs();
+    const { nameInput, priceInput, categoryInput } = await waitForFormToLoad();
 
     expect(nameInput).toBeInTheDocument();
     expect(priceInput).toBeInTheDocument();
@@ -29,14 +29,21 @@ describe("ProductForm", () => {
   });
 
   it("should populate form fields when editing a product", async () => {
-    const { waitForFormToLoad, getInputs } = renderComponent(product);
+    const { waitForFormToLoad } = renderComponent(product);
 
-    await waitForFormToLoad();
-    const { nameInput, priceInput, categoryInput } = getInputs();
+    const { nameInput, priceInput, categoryInput } = await waitForFormToLoad();
 
     expect(nameInput).toHaveValue(product.name);
     expect(priceInput).toHaveValue(product.price.toString());
     expect(categoryInput).toHaveTextContent(category.name);
+  });
+
+  it("should put focus on the name field by default", async () => {
+    const { waitForFormToLoad } = renderComponent();
+
+    const { nameInput } = await waitForFormToLoad();
+
+    expect(nameInput).toHaveFocus();
   });
 
   const renderComponent = (product?: Product) => {
@@ -44,9 +51,10 @@ describe("ProductForm", () => {
       wrapper: AllProviders,
     });
     return {
-      waitForFormToLoad: () => screen.findByRole("form"),
-      getInputs: () => {
+      waitForFormToLoad: async () => {
+        await screen.findByRole("form");
         return {
+          user: userEvent.setup(),
           nameInput: screen.getByPlaceholderText(/name/i),
           priceInput: screen.getByPlaceholderText(/price/i),
           categoryInput: screen.getByRole("combobox", { name: /category/i }),
