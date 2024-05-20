@@ -4,6 +4,7 @@
 import { render, screen } from "@testing-library/react";
 
 import userEvent from "@testing-library/user-event";
+import { Toaster } from "react-hot-toast";
 import ProductForm from "../../src/components/ProductForm";
 import { Category, Product } from "../../src/entities";
 import AllProviders from "../AllProviders";
@@ -90,10 +91,43 @@ describe("ProductForm", () => {
     }
   );
 
+  it("should call submit with the correct data", async () => {
+    const { waitForFormToLoad, onSubmit } = renderComponent();
+
+    const { fillOutForm, validData } = await waitForFormToLoad();
+
+    await fillOutForm(validData);
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { id, ...formData } = validData;
+    expect(onSubmit).toHaveBeenCalledWith(formData);
+  });
+
+  it("should display a toast if submission failed ", async () => {
+    const { waitForFormToLoad, onSubmit } = renderComponent();
+    onSubmit.mockRejectedValue({});
+
+    const { fillOutForm, validData } = await waitForFormToLoad();
+
+    await fillOutForm(validData);
+
+    const toast = await screen.findByRole("status");
+    expect(toast).toBeInTheDocument();
+    expect(toast).toHaveTextContent(/unexpected error/i);
+  });
+
   const renderComponent = (product?: Product) => {
-    render(<ProductForm product={product} onSubmit={vi.fn()} />, {
-      wrapper: AllProviders,
-    });
+    const onSubmit = vi.fn();
+
+    render(
+      <>
+        <ProductForm product={product} onSubmit={onSubmit} />
+        <Toaster />
+      </>,
+      {
+        wrapper: AllProviders,
+      }
+    );
 
     const user = userEvent.setup();
 
@@ -105,7 +139,12 @@ describe("ProductForm", () => {
       const categoryInput = screen.getByRole("combobox", { name: /category/i });
       const submitButton = screen.getByRole("button", { name: /submit/i });
 
-      const validData = { id: 1, categoryId: 1, name: "a", price: 10 };
+      const validData = {
+        id: 1,
+        categoryId: category.id,
+        name: "a",
+        price: 10,
+      };
 
       type FormData = {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -116,6 +155,7 @@ describe("ProductForm", () => {
           await user.type(nameInput, product.name);
         if (product.price != undefined)
           await user.type(priceInput, product.price.toString());
+        // await user.tab();
         await user.click(categoryInput);
         const options = screen.getAllByRole("option");
         await user.click(options[0]);
@@ -139,6 +179,7 @@ describe("ProductForm", () => {
 
     return {
       user,
+      onSubmit,
       waitForFormToLoad,
       expectErrorToBeInTheDocument,
     };
