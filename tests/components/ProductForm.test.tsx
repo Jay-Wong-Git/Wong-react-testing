@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { render, screen } from "@testing-library/react";
 
 import userEvent from "@testing-library/user-event";
@@ -56,20 +59,34 @@ describe("ProductForm", () => {
   ])(
     "should render an error if name is $scenario",
     async ({ name, errorMessage }) => {
-      const { waitForFormToLoad, user } = renderComponent();
+      const { waitForFormToLoad, expectErrorToBeInTheDocument } =
+        renderComponent();
 
-      const { nameInput, priceInput, categoryInput, submitButton } =
-        await waitForFormToLoad();
+      const { fillOutForm, validData } = await waitForFormToLoad();
 
-      if (name) await user.type(nameInput, name);
-      await user.type(priceInput, "10");
-      await user.click(categoryInput);
-      const options = screen.getAllByRole("option");
-      await user.click(options[0]);
-      await user.click(submitButton);
+      await fillOutForm({ ...validData, name });
 
-      const error = screen.getByRole("alert");
-      expect(error).toHaveTextContent(errorMessage);
+      expectErrorToBeInTheDocument(errorMessage);
+    }
+  );
+
+  it.each([
+    { scenario: "missing", errorMessage: /required/i },
+    { scenario: "not a number", errorMessage: /required/i },
+    { scenario: "0", price: 0, errorMessage: /1/i },
+    { scenario: "negative", price: -1, errorMessage: /1/i },
+    { scenario: "greater than 1000", price: 1001, errorMessage: /1000/i },
+  ])(
+    "should render an error if price is $scenario",
+    async ({ price, errorMessage }) => {
+      const { waitForFormToLoad, expectErrorToBeInTheDocument } =
+        renderComponent();
+
+      const { fillOutForm, validData } = await waitForFormToLoad();
+
+      await fillOutForm({ ...validData, price });
+
+      expectErrorToBeInTheDocument(errorMessage);
     }
   );
 
@@ -77,17 +94,53 @@ describe("ProductForm", () => {
     render(<ProductForm product={product} onSubmit={vi.fn()} />, {
       wrapper: AllProviders,
     });
+
+    const user = userEvent.setup();
+
+    const waitForFormToLoad = async () => {
+      await screen.findByRole("form");
+
+      const nameInput = screen.getByPlaceholderText(/name/i);
+      const priceInput = screen.getByPlaceholderText(/price/i);
+      const categoryInput = screen.getByRole("combobox", { name: /category/i });
+      const submitButton = screen.getByRole("button", { name: /submit/i });
+
+      const validData = { id: 1, categoryId: 1, name: "a", price: 10 };
+
+      type FormData = {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        [K in keyof Product]: any;
+      };
+      const fillOutForm = async (product: FormData) => {
+        if (product.name !== undefined)
+          await user.type(nameInput, product.name);
+        if (product.price != undefined)
+          await user.type(priceInput, product.price.toString());
+        await user.click(categoryInput);
+        const options = screen.getAllByRole("option");
+        await user.click(options[0]);
+        await user.click(submitButton);
+      };
+
+      return {
+        nameInput,
+        priceInput,
+        categoryInput,
+        submitButton,
+        fillOutForm,
+        validData,
+      };
+    };
+
+    const expectErrorToBeInTheDocument = (errorMessage: RegExp) => {
+      const error = screen.getByRole("alert");
+      expect(error).toHaveTextContent(errorMessage);
+    };
+
     return {
-      user: userEvent.setup(),
-      waitForFormToLoad: async () => {
-        await screen.findByRole("form");
-        return {
-          nameInput: screen.getByPlaceholderText(/name/i),
-          priceInput: screen.getByPlaceholderText(/price/i),
-          categoryInput: screen.getByRole("combobox", { name: /category/i }),
-          submitButton: screen.getByRole("button", { name: /submit/i }),
-        };
-      },
+      user,
+      waitForFormToLoad,
+      expectErrorToBeInTheDocument,
     };
   };
 });
