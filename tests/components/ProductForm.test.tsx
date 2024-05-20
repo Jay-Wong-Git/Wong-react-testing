@@ -46,21 +46,32 @@ describe("ProductForm", () => {
     expect(nameInput).toHaveFocus();
   });
 
-  it("should render an error if name is missing", async () => {
-    const { waitForFormToLoad, user } = renderComponent();
+  it.each([
+    { scenario: "missing", errorMessage: /required/i },
+    {
+      scenario: "longer than 255 characters",
+      name: "a".repeat(256),
+      errorMessage: /255 character/i,
+    },
+  ])(
+    "should render an error if name is $scenario",
+    async ({ name, errorMessage }) => {
+      const { waitForFormToLoad, user } = renderComponent();
 
-    const { priceInput, categoryInput, submitButton } =
-      await waitForFormToLoad();
+      const { nameInput, priceInput, categoryInput, submitButton } =
+        await waitForFormToLoad();
 
-    await user.type(priceInput, "10");
-    await user.click(categoryInput);
-    const options = screen.getAllByRole("option");
-    await user.click(options[0]);
-    await user.click(submitButton);
+      if (name) await user.type(nameInput, name);
+      await user.type(priceInput, "10");
+      await user.click(categoryInput);
+      const options = screen.getAllByRole("option");
+      await user.click(options[0]);
+      await user.click(submitButton);
 
-    const error = screen.getByRole("alert");
-    expect(error).toHaveTextContent(/name is required/i);
-  });
+      const error = screen.getByRole("alert");
+      expect(error).toHaveTextContent(errorMessage);
+    }
+  );
 
   const renderComponent = (product?: Product) => {
     render(<ProductForm product={product} onSubmit={vi.fn()} />, {
