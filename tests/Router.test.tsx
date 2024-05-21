@@ -28,4 +28,10 @@ describe("Router", () => {
 
     db.product.delete({ where: { id: { equals: product.id } } });
   });
+
+  it("should render the not found page for invalid routes", async () => {
+    navigateTo("/invalid-route");
+
+    expect(await screen.findByText(/not found/i)).toBeInTheDocument();
+  });
 });
