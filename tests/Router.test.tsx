@@ -34,4 +34,10 @@ describe("Router", () => {
 
     expect(await screen.findByText(/not found/i)).toBeInTheDocument();
   });
+
+  it("should render the admin page for '/admin'", () => {
+    navigateTo("/admin");
+
+    expect(screen.getByRole("heading", { name: /admin/i })).toBeInTheDocument();
+  });
 });
